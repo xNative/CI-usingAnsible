@@ -1,6 +1,6 @@
 ---
 - name: Install Java 1.7
-  yum: name=java-1.7.0-openjdk state=present
+  package: name=java-1.7.0-openjdk state=present
 
 - name: add group "tomcat"
   group: name={{tomcat_group}}
@@ -25,18 +25,15 @@
 - name: Configure Tomcat server
   template: src=server.xml dest=/usr/share/tomcat/conf/
 
-  
 - name: Create  sample directory
-  file: 
+  file:
     path: "/opt/apache-tomcat-7.0.61/webapps/samples"
     state: directory
     mode: 0777
   become: true
-  
 
 - name: copy war file
   copy: src=./target/LoginWebApp-1.war dest=/opt/apache-tomcat-7.0.61/webapps/
-
 
   notify: restart tomcat
 
